@@ -40,6 +40,9 @@ class Configuration implements ConfigurationInterface
                 ->requiresAtLeastOneElement()
                 ->prototype('scalar')->end()
             ->end()
+            ->arrayNode('initiateAdapters')
+                ->prototype('scalar')->end()
+            ->end()
         ->end()
         ;
 
