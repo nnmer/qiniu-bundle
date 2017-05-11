@@ -1,0 +1,12 @@
+{
+    "name": "nnmer/qiniu-bundle",
+    "authors": [
+        {
+            "name": "Anton Romanov",
+            "email": "anton.v.romanov@gmail.com"
+        }
+    ],
+    "require": {
+        "qiniu/php-sdk": "^7.1"
+    }
+}
