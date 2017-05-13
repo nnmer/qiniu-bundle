@@ -1,4 +1,1 @@
 services:
-#    nnmer_qiniu.service:
-#        class: Nnmer\QiniuBundle\Service\QiniuService
-#        arguments: ["%nnmer_qiniu_accessKey%", %nnmer_qiniu_secretKey%]

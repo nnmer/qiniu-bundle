@@ -2,18 +2,20 @@ This bundle aim is to help to work with [七牛](https://www.qiniu.com/) CDN ser
 
 The work on bundle is in process, the documentation will be updated respectively.
 
-### Installation
+### Installation & Configuration
 
-1. 
+_Note: this bundle doesn't provide any 七牛 frontend related code._ 
 
-`composer require nnmer/qiniu-bundle`
+1. Install: `composer require nnmer/qiniu-bundle`
 
-2. At AppKernel.php add bundle:
+2. Add bundle AppKernel.php :
 ```php
+ ...
  new Nnmer\QiniuBundle(),
+ ...
 ```
 
-3. config.yml
+3. Add bundle configuration at config.yml
 ```yaml
 nnmer_qiniu:
     defaultBucket: a1
@@ -24,7 +26,33 @@ nnmer_qiniu:
         - b2
 ```
 
+4. Add to you routing
+```yaml
+qiniu_processing_results:
+    resource: "@NnmerQiniuBundle/Controller/QiniuCallbackController.php"
+    type:     annotation
+    prefix:   /
+```
 
+5. if you are behind symfony's firewall, then add to your security.yml  access_control section:
+```yaml
+- { path: ^/qiniu-callback-url, role: IS_AUTHENTICATED_ANONYMOUSLY }
+- { path: ^/qiniu-persistence-notify-url, role: IS_AUTHENTICATED_ANONYMOUSLY }
+```
+
+6. Done. From this point once you will receive a callback from Qiniu the 2 events can be raised, depends on the callback:
+- `QiniuEvents::FILE_UPLOADED`
+- `QiniuEvents::PERSISTENCE_RESULTS_RECEIVED`
+
+the content of the event is the payload of the callback, so you can process you logic by listening to this events and manage the payload data
+
+### Overwriting controller
+
+If you want to have custom controller logic then do either:
+- extend `QiniuCallbackController` class (this will give you existing 2 callbacks defined)
+- implement `QiniuCallbackControllerInterface` interface (you will need to define the content for the controller's 2 callbacks methods)
+
+In this case remember to repoint routing definition to your content, or remove it if you manage routing definitions yourself
 
 ### Available services
 
