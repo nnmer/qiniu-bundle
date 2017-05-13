@@ -1,15 +1,16 @@
+This bundle aim is to help to work with [七牛](https://www.qiniu.com/) CDN service.
+
+The work on bundle is in process, the documentation will be updated respectively.
+
 ### Installation
 
-1. At AppKernel.php add bundle:
+1. 
+
+`composer require nnmer/qiniu-bundle`
+
+2. At AppKernel.php add bundle:
 ```php
  new Nnmer\QiniuBundle(),
-```
-2. Add routing
-```yaml
-nnmer_qiniu:
-    resource: "@NnmerQiniuBundle/Resources/config/routing.yml"
-    prefix:   /qiniu
-
 ```
 
 3. config.yml
