@@ -6,6 +6,7 @@ use Qiniu\Auth;
 use function Qiniu\base64_urlSafeEncode;
 use Qiniu\Http\Error;
 use Qiniu\Processing\PersistentFop;
+use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Zone;
 
@@ -16,6 +17,9 @@ class QiniuService
 
     /** @var  UploadManager */
     private $uploadManager;
+
+    /** @var BucketManager  */
+    private $bucketManager;
 
     /** @var Zone  */
     private $zone;
@@ -30,6 +34,7 @@ class QiniuService
 
         $this->uploadManager  = new UploadManager();
         $this->zone           = new Zone();
+        $this->bucketManager  = new BucketManager($this->auth, $this->zone);
     }
 
     /**
@@ -38,6 +43,14 @@ class QiniuService
     public function getUploadManager()
     {
         return $this->uploadManager;
+    }
+
+    /**
+     * @return BucketManager
+     */
+    public function getBucketManager()
+    {
+        return $this->bucketManager;
     }
 
     /**
@@ -51,7 +64,7 @@ class QiniuService
     /**
      * @return string
      */
-    public function getBucketBame()
+    public function getBucketName()
     {
         return $this->bucket;
     }

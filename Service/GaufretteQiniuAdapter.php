@@ -50,7 +50,12 @@ class GaufretteQiniuAdapter implements Adapter
      */
     public function exists($key)
     {
-        // TODO: Implement exists() method.
+        $return = $this->qiniuService->getBucketManager()->stat($this->bucket, $key);
+        if ($return[0]===null){
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -84,7 +89,12 @@ class GaufretteQiniuAdapter implements Adapter
      */
     public function delete($key)
     {
-        // TODO: Implement delete() method.
+        $return = $this->qiniuService->getBucketManager()->delete($this->bucket, $key);
+        if (null !== $return){
+            return false;
+        }
+
+        return true;
     }
 
     /**
