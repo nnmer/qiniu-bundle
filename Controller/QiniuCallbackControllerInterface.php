@@ -19,7 +19,7 @@ interface QiniuCallbackControllerInterface
      * @param Request $request
      * @return JsonResponse
      *
-     * @Route(name="nnmer_qiniu_persistent_notify_url", path="/qiniu-persistent-notify-url", methods={"POST"})
+     * @Route(name="nnmer_qiniu_persistence_notify_url", path="/qiniu-persistent-notify-url", methods={"POST"})
      */
-    public function persistentNotifyUrlAction(Request $request);
+    public function persistenceNotifyUrlAction(Request $request);
 }

@@ -32,7 +32,7 @@ class QiniuCallbackController extends Controller implements QiniuCallbackControl
      *
      * @Route(name="nnmer_qiniu_persistence_notify_url", path="/qiniu-persistence-notify-url", methods={"POST"})
      */
-    public function persistentNotifyUrlAction(Request $request)
+    public function persistenceNotifyUrlAction(Request $request)
     {
         parse_str($request->getContent(),$payload);
         $this->get('event_dispatcher')->dispatch(QiniuEvents::PERSISTENCE_RESULTS_RECEIVED, new QiniuPersistenceEvent($payload));
