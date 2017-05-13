@@ -14,6 +14,9 @@ class QiniuService
     /** @var  UploadManager */
     private $uploadManager;
 
+    /** @var Zone  */
+    private $zone;
+
     /** @var  string */
     private $bucket;
 
@@ -23,11 +26,17 @@ class QiniuService
         $this->bucket   = $bucket;
 
         $this->uploadManager  = new UploadManager();
+        $this->zone           = new Zone();
     }
 
     public function getUploadManager()
     {
         return $this->uploadManager;
+    }
+
+    public function getZone()
+    {
+        return $this->zone;
     }
 
     /**
