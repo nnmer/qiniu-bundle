@@ -1,5 +1,7 @@
 {
     "name": "nnmer/qiniu-bundle",
+    "description": "Symfony2(3) bundle integration with 七牛 (Qiniu) CDN service",
+    "keywords": ["symfony2", "bundle", "qiniu", "七牛"],
     "authors": [
         {
             "name": "Anton Romanov",
@@ -8,5 +10,10 @@
     ],
     "require": {
         "qiniu/php-sdk": "^7.1"
+    },
+    "autoload":{
+        "psr-4":{
+            "Nnmer\\QiniuBundle\\": ""
+        }
     }
 }
