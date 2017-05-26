@@ -118,12 +118,47 @@ class QiniuService
         return $fops;
     }
 
+
+    /**
+     * Prepare parameters for avconcat processing
+     *
+     * @param int $mode
+     * @param $format
+     * @param mixed $concatUrls
+     * @param null $saveAs
+     * @return bool|string
+     */
+    public function prepareAvconcatParameters($mode = 2, $format, $concatUrls, $saveAs = null)
+    {
+        if (empty($concatUrls)){
+            return false;
+        }
+        $fops = 'avconcat/'.$mode.'/format/'.$format.'/';
+
+        if (is_array($concatUrls)) {
+            $fops .= join('/',
+                array_map(
+                    function ($item) { return base64_urlSafeEncode($item);},
+                    $concatUrls)
+            );
+        }else{
+            $fops .= base64_urlSafeEncode($concatUrls);
+        }
+
+
+        if (null !== $saveAs && is_string($saveAs)){
+            $fops .= "|saveas/".base64_urlSafeEncode($saveAs);
+        }
+
+        return $fops;
+    }
+
     /**
      *
-     * Submit avthumb execution to Qiniu
+     * Submit fops execution to Qiniu
      *
      * @param string        $key
-     * @param array|string  $avthumbConfig
+     * @param array|string  $fopConfig
      * @param string|null   $pipeline
      * @param string|null   $notifyUrl
      * @param bool          $force
@@ -131,10 +166,10 @@ class QiniuService
      *
      * @throws \LogicException
      */
-    public function executeAvthumb($key, $avthumbConfig, $pipeline=null, $notifyUrl=null, $force = false)
+    public function executePersistenceProcess($key, $fopConfig, $pipeline=null, $notifyUrl=null, $force = false)
     {
         $fops = new PersistentFop($this->auth, $this->bucket, $pipeline, $notifyUrl, $force);
-        $result = $fops->execute($key, $avthumbConfig);
+        $result = $fops->execute($key, $fopConfig);
         if (null !== $result[0]){
             return $result[0];      // success, return persistentId
         }elseif ($result[1] instanceof Error){
@@ -142,9 +177,10 @@ class QiniuService
             $error = $result[1];
             throw new \LogicException($error->message(), $error->code());
         }else{
-            throw new \LogicException('Cannot determine error from the Qiniu avthumb execution');
+            throw new \LogicException('Cannot determine error from the Qiniu fops execution');
         }
     }
+
 
     // TODO: check this method, and correct it. Check the whether is QIniu callback at controller methods
     public function isQiniuCallback(){
