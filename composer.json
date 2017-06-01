@@ -8,6 +8,8 @@
             "email": "anton.v.romanov@gmail.com"
         }
     ],
+    "prefer-stable" : true,
+    "minimum-stability": "dev",
     "require": {
         "qiniu/php-sdk": "^7.1"
     },
