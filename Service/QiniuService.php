@@ -4,6 +4,7 @@ namespace Nnmer\QiniuBundle\Service;
 
 use Qiniu\Auth;
 use function Qiniu\base64_urlSafeEncode;
+use Qiniu\Cdn\CdnManager;
 use Qiniu\Http\Error;
 use Qiniu\Processing\PersistentFop;
 use Qiniu\Storage\BucketManager;
@@ -27,6 +28,9 @@ class QiniuService
     /** @var  string */
     private $bucket;
 
+    /** @var CdnManager */
+    private $CDNManager;
+
     public function __construct($accessKey, $secretKey, $bucket)
     {
         $this->auth     = new Auth($accessKey, $secretKey);
@@ -35,6 +39,7 @@ class QiniuService
         $this->uploadManager  = new UploadManager();
         $this->zone           = new Zone();
         $this->bucketManager  = new BucketManager($this->auth, $this->zone);
+        $this->CDNManager     = new CdnManager($this->auth);
     }
 
     /**
@@ -179,6 +184,39 @@ class QiniuService
         }else{
             throw new \LogicException('Cannot determine error from the Qiniu fops execution');
         }
+    }
+
+    /**
+     * Refresh CDN cache by provided urls of resources file
+     *
+     * @param string|array $urls
+     * @return array
+     */
+    public function cacheRefreshUrls($urls)
+    {
+        return $this->CDNManager->refreshUrls($urls);
+    }
+
+    /**
+     * Refresh CDN cache by provided urls of resources folder
+     *
+     * @param string|array $urls
+     * @return array
+     */
+    public function cacheRefreshDirs($dirs)
+    {
+        return $this->CDNManager->refreshDirs($dirs);
+    }
+
+    /**
+     * Prefetch (warm up) cache with provided urls
+     *
+     * @param string|array $urls
+     * @return array
+     */
+    public function cachePrefetchUrls($urls)
+    {
+        return $this->CDNManager->prefetchUrls($urls);
     }
 
 
