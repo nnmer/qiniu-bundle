@@ -190,33 +190,66 @@ class QiniuService
      * Refresh CDN cache by provided urls of resources file
      *
      * @param string|array $urls
-     * @return array
+     * @return array                if request was successful
+     *
+     * @throws \LogicException
      */
     public function cacheRefreshUrls($urls)
     {
-        return $this->CDNManager->refreshUrls($urls);
+        $result = $this->CDNManager->refreshUrls($urls);
+        if (null !== $result[0]){
+            return $result[0];          // success, return response
+        }elseif ($result[1] instanceof Error){
+            /** @var Error $error */
+            $error = $result[1];
+            throw new \LogicException($error->message(), $error->code());
+        }else{
+            throw new \LogicException('Cannot determine error from the Qiniu cache refresh urls execution');
+        }
     }
 
     /**
      * Refresh CDN cache by provided urls of resources folder
      *
      * @param string|array $urls
-     * @return array
+     * @return array                if request was successful
+     *
+     * @throws \LogicException
      */
     public function cacheRefreshDirs($dirs)
     {
-        return $this->CDNManager->refreshDirs($dirs);
+        $result = $this->CDNManager->refreshDirs($dirs);
+        if (null !== $result[0]){
+            return $result[0];          // success, return response
+        }elseif ($result[1] instanceof Error){
+            /** @var Error $error */
+            $error = $result[1];
+            throw new \LogicException($error->message(), $error->code());
+        }else{
+            throw new \LogicException('Cannot determine error from the Qiniu cache refresh dirs execution');
+        }
     }
 
     /**
      * Prefetch (warm up) cache with provided urls
      *
      * @param string|array $urls
-     * @return array
+     * @return array                if request was successful
+     *
+     * @throws \LogicException
      */
     public function cachePrefetchUrls($urls)
     {
-        return $this->CDNManager->prefetchUrls($urls);
+        $result = $this->CDNManager->prefetchUrls($urls);
+        if (null !== $result[0]){
+            return $result[0];          // success, return response
+        }elseif ($result[1] instanceof Error){
+            /** @var Error $error */
+            $error = $result[1];
+            throw new \LogicException($error->message(), $error->code());
+        }else{
+            throw new \LogicException('Cannot determine error from the Qiniu cache prefetch execution');
+        }
     }
 
 
