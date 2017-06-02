@@ -252,6 +252,25 @@ class QiniuService
         }
     }
 
+    /**
+     * Retrieve stat data about the resource
+     * @param $key
+     * @return mixed
+     */
+    public function getResourceStat($key)
+    {
+        $result = $this->bucketManager->stat($this->bucket, $key);
+        if (null !== $result[0]){
+            return $result[0];          // success, return response
+        }elseif ($result[1] instanceof Error){
+            /** @var Error $error */
+            $error = $result[1];
+            throw new \LogicException($error->message(), $error->code());
+        }else{
+            throw new \LogicException('Cannot retrieve resource stat data from Qiniu cache');
+        }
+    }
+
 
     // TODO: check this method, and correct it. Check the whether is QIniu callback at controller methods
     public function isQiniuCallback(){
