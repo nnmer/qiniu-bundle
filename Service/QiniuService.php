@@ -5,6 +5,7 @@ namespace Nnmer\QiniuBundle\Service;
 use Qiniu\Auth;
 use function Qiniu\base64_urlSafeEncode;
 use Qiniu\Cdn\CdnManager;
+use Qiniu\Http\Client;
 use Qiniu\Http\Error;
 use Qiniu\Processing\PersistentFop;
 use Qiniu\Storage\BucketManager;
@@ -40,6 +41,14 @@ class QiniuService
         $this->zone           = new Zone();
         $this->bucketManager  = new BucketManager($this->auth, $this->zone);
         $this->CDNManager     = new CdnManager($this->auth);
+    }
+
+    /**
+     * @return Auth
+     */
+    public function getAuth()
+    {
+        return $this->auth;
     }
 
     /**
@@ -269,6 +278,24 @@ class QiniuService
         }else{
             throw new \LogicException('Cannot retrieve resource stat data from Qiniu cache');
         }
+    }
+
+    /**
+     * Get the metadata info about the av file
+     *
+     * @param $url
+     * @return array
+     *
+     * @link https://developer.qiniu.com/dora/manual/1247/audio-and-video-metadata-information-avinfo
+     */
+    public function getAvMetadataInfo($url)
+    {
+        $headers = $this->getAuth()->authorization($url);
+        $ret = Client::get($url, $headers);
+        if (!$ret->ok()) {
+            throw new \LogicException($ret->error);
+        }
+        return $ret->json();
     }
 
 
