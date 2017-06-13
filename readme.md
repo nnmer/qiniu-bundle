@@ -69,3 +69,7 @@ if KnpGaufretteBundle is installed and `nnmer_qiniu.initiateAdapters` has `gaufr
 next services will be generate:
  
 `nnmer_qiniu.gaufrette_*_adapter` where `*` is each of the `buckets`
+
+### Twig helpers
+`downloadUrl(url, service)` - to build a download link, signed and with time expiration. `service` is the id of the needed service.
+(in a controller the alias is $this->container->get('service id here')->getAuth()->privateDownloadUrl($url))

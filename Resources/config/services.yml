@@ -1,1 +1,8 @@
 services:
+  nnmer_qiniu_download_url.twig.extension:
+    class: Nnmer\QiniuBundle\Twig\Extension\DownloadUrl
+    arguments:
+      - @service_container
+    pablic: false
+    tags:
+      - { name: twig.extension }
