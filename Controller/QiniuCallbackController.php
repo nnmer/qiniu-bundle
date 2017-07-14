@@ -21,8 +21,11 @@ class QiniuCallbackController extends Controller implements QiniuCallbackControl
     public function callbackUrlAction(Request $request)
     {
         parse_str($request->getContent(),$payload);
-        $this->get('event_dispatcher')->dispatch(QiniuEvents::FILE_UPLOADED, new QiniuUploaderEvent($payload));
+        header('Content-Type: application/json');
+        http_response_code(200);
+        fastcgi_finish_request();
 
+        $this->get('event_dispatcher')->dispatch(QiniuEvents::FILE_UPLOADED, new QiniuUploaderEvent($payload));
         return new JsonResponse();
     }
 
@@ -38,9 +41,11 @@ class QiniuCallbackController extends Controller implements QiniuCallbackControl
         if (null === $payload){
             throw new \LogicException('Payload received from Qiniu is not a json content');
         }
+        header('Content-Type: application/json');
+        http_response_code(200);
+        fastcgi_finish_request();
 
         $this->get('event_dispatcher')->dispatch(QiniuEvents::PERSISTENCE_RESULTS_RECEIVED, new QiniuPersistenceEvent($payload));
-
         return new JsonResponse();
     }
 }
