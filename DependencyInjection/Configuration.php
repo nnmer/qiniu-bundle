@@ -26,11 +26,9 @@ class Configuration implements ConfigurationInterface
         $rootNode
         ->children()
             ->scalarNode('accessKey')
-                ->defaultValue('%nnmer_qiniu_accessKey%')
                 ->cannotBeEmpty()
             ->end()
             ->scalarNode('secretKey')
-                ->defaultValue('%nnmer_qiniu_secretKey%')
                 ->cannotBeEmpty()
             ->end()
             ->scalarNode('defaultBucket')

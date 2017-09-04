@@ -18,6 +18,8 @@ _Note: this bundle doesn't provide any 七牛 frontend related code._
 3. Add bundle configuration at config.yml
 ```yaml
 nnmer_qiniu:
+    accessKey: xxxxxxx
+    secretKey: yyyyyyy
     defaultBucket: a1
     initiateAdapters:
         - gaufrette
